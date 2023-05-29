@@ -1,0 +1,162 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Kemerovo API",
+    "description": "API функционал Kemerovo API",
+    "contact": {
+      "email": "dogvor@yandex.ru"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:4082/api/"
+    }
+  ],
+  "tags": [
+    {
+      "name": "api",
+      "description": "Функционал API"
+    }
+  ],
+  "paths": {
+    "/getReport/{collaborator}/{week}": {
+      "get": {
+        "tags": [
+          "api"
+        ],
+        "summary": "Количество отработанного времени",
+        "description": "Количество отработанного времени",
+        "parameters": [
+          {
+            "name": "collaborator",
+            "in": "path",
+            "description": "Идентификатор сотрудника",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "week",
+            "in": "path",
+            "description": "Идентификатор недели",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Операция успешно выполнена",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "time": {
+                      "type": "string",
+                      "enum": [
+                        "00:00:00"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Не найден сотрудник"
+          }
+        }
+      }
+    },
+    "/work-time/{collaborator}": {
+      "get": {
+        "tags": [
+          "api"
+        ],
+        "summary": "Открытие и закрытие смены",
+        "description": "Открытие и закрытие смены",
+        "parameters": [
+          {
+            "name": "collaborator",
+            "in": "path",
+            "description": "Идентификатор сотрудника",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Операция успешно выполнена",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "workTime": {
+                      "type": "string",
+                      "enum": [
+                        "open",
+                        "close"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Не найден сотрудник"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Times": {
+        "type": "object",
+        "properties": {
+          "time": {
+            "type": "string",
+            "enum": [
+              "00:00:00"
+            ]
+          }
+        }
+      },
+      "WorkTime": {
+        "type": "object",
+        "properties": {
+          "workTime": {
+            "type": "string",
+            "enum": [
+              "open",
+              "close"
+            ]
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}
